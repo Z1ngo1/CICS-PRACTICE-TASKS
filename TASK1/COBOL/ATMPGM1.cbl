@@ -40,6 +40,7 @@
                                                                         
       * WORKING VARIABLES                                               
        01 WS-PINCODE      PIC X(4).                                     
+       01 WS-OPRID        PIC X(8).                                     
                                                                         
       * COMMAREA LAYOUT                                                 
       *-------------------------------------------------------------*   
@@ -61,15 +62,17 @@
       * FIRST ENTRY OR CLEAR -> BLANK MAP.                             *
       * ENTER  -> RECEIVE, VALIDATE (SENDS UPDATE INTERNALLY), RETURN. *
       * PF3    -> END TRANSACTION.                                     *
-      * OTHER  -> RE-SEND MAP WITH ERROR MESSAGE.                      *
+      * OTHER  -> RE-SEND MAP WITH ERROR MESSAGE (VIA SEND-MAP-UPDATE).*
       *----------------------------------------------------------------*
        MAIN-LOGIC.                                                      
            EVALUATE TRUE                                                
                WHEN EIBCALEN = ZERO                                     
                  MOVE LOW-VALUES TO JOB1MAPO                            
+                 MOVE -1 TO OPRIDL                                      
                  PERFORM SEND-MAP                                       
                WHEN EIBAID = DFHCLEAR                                   
                  MOVE LOW-VALUES TO JOB1MAPO                            
+                 MOVE -1 TO OPRIDL                                      
                  PERFORM SEND-MAP                                       
                WHEN EIBAID = DFHPF3                                     
                  MOVE LOW-VALUES TO JOB1MAPO                            
@@ -86,7 +89,7 @@
                  MOVE LOW-VALUES TO JOB1MAPO                            
                  MOVE DFHYELLO TO MSGC                                  
                  MOVE 'INVALID KEY PRESSED' TO MSGO                     
-                 PERFORM SEND-MAP                                       
+                 PERFORM SEND-MAP-UPDATE                                
            END-EVALUATE                                                 
                                                                         
            PERFORM RETURN-TRANS.                                        
@@ -97,7 +100,8 @@
       *   1. OPERATOR ID NOT ENTERED / BLANK.                   *       
       *   2. PIN NOT ENTERED / BLANK.                           *       
       *   3. PIN NOT NUMERIC.                                   *       
-      *   4. ALL CHECKS PASSED -> SUCCESS MESSAGE.              *       
+      *   4. PIN LENGTH NOT EQUAL TO 4 DIGITS.                  *       
+      *   5. ALL CHECKS PASSED -> SUCCESS MESSAGE.              *       
       * RESULT COLOR/TEXT PLACED INTO MSGC / MSGO FOR           *       
       * SEND-MAP-UPDATE TO DISPLAY.                             *       
       *---------------------------------------------------------*       
@@ -107,11 +111,11 @@
               MOVE DFHRED TO MSGC                                       
               MOVE 'OPERATOR ID IS REQUIRED' TO MSGO                    
               MOVE -1 TO OPRIDL                                         
-              MOVE SPACES TO OPRIDO                                     
-              PERFORM SEND-MAP-UPDATE                                   
+              PERFORM SEND-MAP                                          
               EXIT PARAGRAPH                                            
            END-IF                                                       
                                                                         
+           MOVE OPRIDI TO WS-OPRID                                      
            MOVE SPACES TO MSGO                                          
            PERFORM VALIDATE-PINCODE.                                    
                                                                         
@@ -127,30 +131,48 @@
               MOVE LOW-VALUES TO JOB1MAPO                               
               MOVE DFHRED TO MSGC                                       
               MOVE 'PIN CODE MUST BE ENTERED' TO MSGO                   
-              MOVE OPRIDI TO OPRIDO                                     
-              MOVE SPACES TO PINCODEO                                   
+              MOVE WS-OPRID TO OPRIDO                                   
               MOVE -1 TO PINCODEL                                       
-              PERFORM SEND-MAP-UPDATE                                   
+              PERFORM SEND-MAP                                          
               EXIT PARAGRAPH                                            
            END-IF                                                       
                                                                         
-           IF PINCODEL NOT = 4 OR WS-PINCODE NOT NUMERIC                
+           IF WS-PINCODE(1:1) = SPACE OR WS-PINCODE(2:1) = SPACE        
+              OR WS-PINCODE(3:1) = SPACE OR WS-PINCODE(4:1) = SPACE     
+              MOVE LOW-VALUES TO JOB1MAPO                               
+              MOVE DFHRED TO MSGC                                       
+              MOVE 'PIN CODE MUST BE ENTERED' TO MSGO                   
+              MOVE WS-OPRID TO OPRIDO                                   
+              MOVE -1 TO PINCODEL                                       
+              PERFORM SEND-MAP                                          
+              EXIT PARAGRAPH                                            
+           END-IF                                                       
+                                                                        
+           IF WS-PINCODE NOT NUMERIC                                    
+              MOVE LOW-VALUES TO JOB1MAPO                               
+              MOVE DFHRED TO MSGC                                       
+              MOVE 'PIN CODE MUST BE NUMERIC' TO MSGO                   
+              MOVE WS-OPRID TO OPRIDO                                   
+              MOVE -1 TO PINCODEL                                       
+              PERFORM SEND-MAP                                          
+              EXIT PARAGRAPH                                            
+           END-IF                                                       
+                                                                        
+           IF PINCODEL NOT = 4                                          
               MOVE LOW-VALUES TO JOB1MAPO                               
               MOVE DFHRED TO MSGC                                       
               MOVE 'PIN CODE MUST CONTAIN 4 DIGITS' TO MSGO             
-              MOVE OPRIDI TO OPRIDO                                     
-              MOVE SPACES TO PINCODEO                                   
+              MOVE WS-OPRID TO OPRIDO                                   
               MOVE -1 TO PINCODEL                                       
-              PERFORM SEND-MAP-UPDATE                                   
+              PERFORM SEND-MAP                                          
               EXIT PARAGRAPH                                            
            END-IF                                                       
                                                                         
+           MOVE LOW-VALUES TO JOB1MAPO                                  
            MOVE DFHGREEN TO MSGC                                        
            MOVE 'AUTHORIZATION SUCCESSFUL' TO MSGO                      
-           MOVE SPACES TO OPRIDO                                        
-           MOVE SPACES TO PINCODEO                                      
            MOVE -1 TO OPRIDL                                            
-           PERFORM SEND-MAP-UPDATE.                                     
+           PERFORM SEND-MAP.                                            
                                                                         
       *--------------------------------------------*                    
       * SENDS JOB1MAP TO THE TERMINAL, ERASING THE *                    
@@ -162,6 +184,7 @@
              MAPSET ('JOB1SET')                                         
              FROM   (JOB1MAPO)                                          
              ERASE                                                      
+             CURSOR                                                     
              RESP   (WS-RESP)                                           
              RESP2  (WS-RESP2)                                          
            END-EXEC.                                                    
@@ -209,7 +232,7 @@
                 WHEN DFHRESP(NORMAL)                                    
                   CONTINUE                                              
                 WHEN DFHRESP(MAPFAIL)                                   
-                  MOVE LOW-VALUES TO JOB1MAPO                           
+                  CONTINUE                                              
                 WHEN OTHER                                              
                   EXEC CICS ABEND                                       
                     ABCODE ('RCVE')                                     
@@ -218,9 +241,11 @@
                                                                         
       *---------------------------------------------------*             
       * SENDS ONLY UPDATED DATA (NO ATTRIBUTES REBUILD,   *             
-      * NO ERASE). USED AFTER VALIDATION SO OPRID/PINCODE *             
-      * KEEP THEIR ENTERED VALUES AND THE CURSOR CAN BE   *             
-      * DYNAMICALLY REPOSITIONED VIA -1 IN THE L-FIELD.   *             
+      * NO ERASE). CALLED FOR AN UNRECOGNIZED AID KEY     *             
+      * (MAIN-LOGIC WHEN OTHER) SO THE PREVIOUSLY ENTERED *             
+      * OPRID/PINCODE STAY ON SCREEN WHILE ONLY MSGO/MSGC *             
+      * ARE REFRESHED. CURSOR STAYS AT ITS PRIOR POSITION *             
+      * (CURSOR(EIBCPOSN))                                *             
       *---------------------------------------------------*             
        SEND-MAP-UPDATE.                                                 
            EXEC CICS SEND                                               
@@ -228,10 +253,10 @@
              MAPSET   ('JOB1SET')                                       
              FROM     (JOB1MAPO)                                        
              DATAONLY                                                   
-             CURSOR                                                     
+             CURSOR   (EIBCPOSN)                                        
              RESP     (WS-RESP)                                         
              RESP2    (WS-RESP2)                                        
-           END-EXEC.                                                    
+           END-EXEC                                                     
                                                                         
            EVALUATE WS-RESP                                             
                WHEN DFHRESP(NORMAL)                                     
