@@ -14,7 +14,7 @@ First CICS screen of an ATM authorization module. The program displays a screen 
 | [`JCL`](JCL) | [`MAPCOMP.jcl`](JCL/MAPCOMP.jcl) | Assembles the BMS mapset into a physical map (load module) + symbolic map (copybook) |
 | [`JCL`](JCL) | [`CICSCOB2.jcl`](JCL/CICSCOB2.jcl) | Translates, compiles and link-edits the COBOL program for CICS |
 | [`RDO`](RDO) | [`CEDA.md`](RDO/CEDA.md) | CEDA resource definitions (mapset, program, transaction) and install/verify commands |
-| [`SCREENSHOTS`](SCREENSHOTS) | [`01`](SCREENSHOTS/01-INITIAL-SCREEN.png)-[`08`](SCREENSHOTS/08-AUTHORIZATION-SUCCESSFUL.png) `.png` | Terminal screenshots for each test scenario below |
+| [`SCREENSHOTS`](SCREENSHOTS) | [`01`](SCREENSHOTS/01-INITIAL-SCREEN.png)-[`08`](SCREENSHOTS/08-AUTHORIZATION-SUCCESSFUL.png) `.png` | Terminal screenshots for the key test scenarios below |
 
 ## Screen Fields
 
@@ -61,7 +61,7 @@ All scenarios below were executed manually on the 3270 terminal emulator; result
 3. `ENTER` with valid ID + PIN - `AUTHORIZATION SUCCESSFUL` in green, fields cleared - **PASSED**
 4. `PF3` - `END OF PROGRAM. PRESS CLEAR` displayed, transaction ends - **PASSED**
 5. Any key pressed again after `PF3` - CICS system message "transaction not recognized" (session is really closed) - **PASSED**
-6. Any other `PF`/`PA` key - `INVALID KEY PRESSED` in yellow - on the very first execution of the transaction, `OPERATOR ID IS REQUIRED` fires first, then `INVALID KEY PRESSED` on the next key press; behaves normally afterwards
+6. Any other `PF`/`PA` key - `INVALID KEY PRESSED` in yellow - on the very first execution of the transaction, `OPERATOR ID IS REQUIRED` fires first, then `INVALID KEY PRESSED` on the next key press; behaves normally afterwards - **KNOWN ISSUE**
 
 ### Validation
 
