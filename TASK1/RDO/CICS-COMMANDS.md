@@ -1,6 +1,7 @@
-# CICS Resource Definitions (RDO)
+# CICS Setup (RDO, CEMT)
 
-Resources defined interactively through CEDA for the ATM/AUTH transaction.
+Resources defined through CEDA for the AUTH transaction, plus CEMT
+commands used to run and test it.
 
 ## Mapset
 
@@ -34,8 +35,8 @@ CEDA DEFINE TRANSACTION(AUTH) GROUP(ZXPRDO) PROGRAM(ATMPGM1)
 CEDA INSTALL GROUP(ZXPRDO)
 
 # Or individually
-CEDA INSTALL PROGRAM(ATMPGM1) GROUP(ZXPRDO)
 CEDA INSTALL MAPSET(JOB1SET) GROUP(ZXPRDO)
+CEDA INSTALL PROGRAM(ATMPGM1) GROUP(ZXPRDO)
 CEDA INSTALL TRANSACTION(AUTH) GROUP(ZXPRDO)
 ```
 
@@ -47,3 +48,13 @@ CEDA DISPLAY GROUP(ZXPRDO)
 
 Confirms all three resources (mapset, program, transaction) are present in
 the group.
+
+## Useful CEMT Commands
+
+```
+# Load the new version of the program after each recompile
+CEMT SET PROGRAM(ATMPGM1) NEWCOPY
+
+# Load the new version of the mapset after each reassemble
+CEMT SET MAPSET(JOB1SET) NEWCOPY
+```
