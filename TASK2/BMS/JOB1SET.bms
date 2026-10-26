@@ -1,0 +1,91 @@
+JOB1SET  DFHMSD TYPE=&SYSPARM,                                         X
+               MODE=INOUT,                                             X
+               CTRL=FREEKB,                                            X
+               LANG=COBOL,                                             X
+               TIOAPFX=YES,                                            X
+               DSATTS=(COLOR,HILIGHT),                                 X
+               MAPATTS=(COLOR,HILIGHT),                                X
+               STORAGE=AUTO                                             
+JOB1MAP  DFHMDI SIZE=(24,80),LINE=1,COLUMN=1                            
+         DFHMDF POS=(01,01),                                           X
+               LENGTH=79,                                              X
+               ATTRB=PROT,                                             X
+               COLOR=NEUTRAL,                                          X
+               INITIAL='===============================================X
+               ================================'                        
+         DFHMDF POS=(02,27),                                           X
+               LENGTH=26,                                              X
+               ATTRB=PROT,                                             X
+               COLOR=NEUTRAL,                                          X
+               INITIAL='ATM OPERATOR AUTHORIZATION'                     
+         DFHMDF POS=(03,27),                                           X
+               LENGTH=26,                                              X
+               ATTRB=PROT,                                             X
+               COLOR=NEUTRAL,                                          X
+               INITIAL='=========================='                     
+*********************************************************************** 
+** OPERATOR ID - UNPROTECTED, 8 CHAR                                    
+*********************************************************************** 
+         DFHMDF POS=(09,21),                                           X
+               LENGTH=12,                                              X
+               ATTRB=PROT,                                             X
+               COLOR=GREEN,                                            X
+               INITIAL='OPERATOR ID:'                                   
+OPRID    DFHMDF POS=(09,35),                                           X
+               LENGTH=8,                                               X
+               ATTRB=(UNPROT,FSET,IC),                                 X
+               HILIGHT=UNDERLINE,                                      X
+               COLOR=TURQUOISE                                          
+         DFHMDF POS=(09,44),                                           X
+               LENGTH=1,                                               X
+               ATTRB=ASKIP                                              
+*********************************************************************** 
+** PIN CODE - UNPROTECTED, 4 DIGIT, DARK (HIDDEN), NUM KEYBOARD SHIFT   
+*********************************************************************** 
+         DFHMDF POS=(11,24),                                           X
+               LENGTH=9,                                               X
+               ATTRB=PROT,                                             X
+               COLOR=GREEN,                                            X
+               INITIAL='PIN CODE:'                                      
+PINCODE  DFHMDF POS=(11,35),                                           X
+               LENGTH=4,                                               X
+               ATTRB=(UNPROT,DRK,NUM),                                 X
+               PICIN='9(4)',                                           X
+               HILIGHT=UNDERLINE,                                      X
+               COLOR=TURQUOISE                                          
+         DFHMDF POS=(11,40),                                           X
+               LENGTH=1,                                               X
+               ATTRB=ASKIP                                              
+*********************************************************************** 
+** MESSAGE - PROTECTED, 40 CHAR, COLOR/TEXT SET AT RUNTIME BY ATMPGM    
+*********************************************************************** 
+         DFHMDF POS=(15,23),                                           X
+               LENGTH=8,                                               X
+               ATTRB=PROT,                                             X
+               COLOR=GREEN,                                            X
+               INITIAL='MESSAGE:'                                       
+MSG      DFHMDF POS=(15,33),                                           X
+               LENGTH=40,                                              X
+               ATTRB=PROT,                                             X
+               HILIGHT=UNDERLINE,                                      X
+               COLOR=TURQUOISE                                          
+         DFHMDF POS=(15,76),                                           X
+               LENGTH=1,                                               X
+               ATTRB=ASKIP                                              
+*********************************************************************** 
+** COMMANDS - PROTECTED, DISPLAY ONLY                                   
+*********************************************************************** 
+         DFHMDF POS=(23,02),                                           X
+               LENGTH=21,                                              X
+               ATTRB=PROT,                                             X
+               COLOR=BLUE,                                             X
+               INITIAL='ENTER=SUBMIT  F3=EXIT'                          
+         DFHMDF POS=(24,01),                                           X
+               LENGTH=79,                                              X
+               ATTRB=PROT,                                             X
+               COLOR=NEUTRAL,                                          X
+               INITIAL='===============================================X
+               ================================'                        
+*********************************************************************** 
+         DFHMSD TYPE=FINAL                                              
+         END                                                            
