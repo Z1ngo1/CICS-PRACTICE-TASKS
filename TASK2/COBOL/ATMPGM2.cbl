@@ -22,7 +22,7 @@
       *     3RD WRONG PIN     -> STATUS = 'L', 'ACCOUNT LOCKED'        *
       *   PF3   - SEND 'END OF PROGRAM' AND END THE TRANSACTION.       *
       *   OTHER - SEND 'INVALID KEY - PRESS ENTER OR F3'.              *
-              *                                                                *
+      *                                                                *
       * AUTHOR: STANISLAV                                              *
       * DATE:   2026/02/27                                             *
       *                                                                *
@@ -155,7 +155,7 @@
            INSPECT WS-OPER-KEY REPLACING ALL LOW-VALUES BY SPACE        
            INSPECT WS-PINCODE  REPLACING ALL LOW-VALUES BY SPACE        
                                                                         
-      * CLEAR OUTPUT MAP - ENTERED DATA IS NOT SENT BACK                
+      * CLEAR OUTPUT MAP - PIN IS NEVER SENT BACK TO THE SCREEN         
            MOVE LOW-VALUES TO JOB1MAPO                                  
                                                                         
            IF WS-OPRID-LEN = ZERO OR WS-OPER-KEY = SPACES               
@@ -262,6 +262,7 @@
                                                                         
               MOVE DFHRED TO MSGC                                       
               MOVE 'ACCOUNT LOCKED' TO MSGO                             
+              MOVE WS-OPER-KEY TO OPRIDO                                
               MOVE -1 TO OPRIDL                                         
               PERFORM SEND-MAP                                          
               EXIT PARAGRAPH                                            
@@ -284,6 +285,7 @@
               IF OPER-FAIL-COUNT >= 3                                   
                  MOVE 'L' TO OPER-STATUS                                
                  MOVE 'ACCOUNT LOCKED' TO MSGO                          
+                 MOVE WS-OPER-KEY TO OPRIDO                             
                  MOVE -1 TO OPRIDL                                      
               ELSE                                                      
                  MOVE 'ERROR: INVALID PIN CODE' TO MSGO                 
@@ -294,7 +296,7 @@
                                                                         
            PERFORM REWRITE-OPERATOR                                     
            PERFORM SEND-MAP.                                            
-                                                                        
+
       *----------------------------------------------------------------*
       * WRITES THE UPDATED OPERATOR RECORD BACK TO THE FILE            *
       * (FAIL COUNT AND STATUS) AND RELEASES THE LOCK FROM READ UPDATE.*
@@ -319,7 +321,10 @@
            END-EVALUATE.                                                
                                                                         
       *----------------------------------------------------------------*
-      * SENDS THE FULL MAP AND ERASES THE SCREEN.                      *
+      * SENDS THE FULL MAP AND ERASES THE SCREEN. OLD DATA AND OLD     *
+      * MESSAGE COLOR ARE REMOVED, ONLY FIELDS MOVED TO JOB1MAPO ARE   *
+      * SHOWN. USED FOR FIRST ENTRY, CLEAR, PF3 AND ALL ENTER RESULTS. *
+      * CURSOR GOES TO THE FIELD WITH LENGTH = -1.                     *
       *----------------------------------------------------------------*
        SEND-MAP.                                                        
            EXEC CICS SEND                                               
@@ -341,7 +346,7 @@
                    ABCODE('SEND')                                       
                  END-EXEC                                               
            END-EVALUATE.                                                
-                                                                        
+
       *----------------------------------------------------------------*
       * SENDS ONLY DATA FROM JOB1MAPO (NO ERASE, LABELS STAY).         *
       * ONLY MSG AND ITS COLOR ARE SENT. FIELDS WITH LOW-VALUES ARE NOT*
