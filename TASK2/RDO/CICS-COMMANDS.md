@@ -36,7 +36,6 @@ CEDA DEFINE FILE(ATMTASK2) GROUP(ZXPRDO)
      RECORDFORMAT(F)
      READ(YES) UPDATE(YES)
      ADD(NO) DELETE(NO) BROWSE(NO)
-     OPENTIME(FIRSTREF)
 ```
 
 | Attribute | Value | Why |
@@ -45,7 +44,6 @@ CEDA DEFINE FILE(ATMTASK2) GROUP(ZXPRDO)
 | `UPDATE` | `YES` | needed for `READ UPDATE` and `REWRITE` (fail counter, status) |
 | `ADD` / `DELETE` / `BROWSE` | `NO` | program never adds, deletes or browses records |
 | `RECORDFORMAT` | `F` | all records are 100 bytes |
-| `OPENTIME` | `FIRSTREF` | file is opened on the first request |
 
 ## Install
 
