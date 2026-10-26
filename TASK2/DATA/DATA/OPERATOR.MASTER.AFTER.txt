@@ -1,0 +1,8 @@
+OP0000011234JOHN SMITH                    A00                           
+OP0000025678MARY JOHNSON                  A00                           
+OP0000039999LOCKED USER                   L03                           
+OP0000044444SARAH CONNOR                  L03                           
+OP0000055555JAMES BOND                    L03                           
+OP0000060123ALEXANDER KONSTANTINOV        A00                           
+OP0000077777ANNA LEE                      L03                           
+OP1     1111SHORT ID USER                 A00                           
