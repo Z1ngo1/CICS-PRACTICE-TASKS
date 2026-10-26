@@ -102,8 +102,8 @@
       *   3. PIN NOT NUMERIC.                                   *       
       *   4. PIN LENGTH NOT EQUAL TO 4 DIGITS.                  *       
       *   5. ALL CHECKS PASSED -> SUCCESS MESSAGE.              *       
-      * RESULT COLOR/TEXT PLACED INTO MSGC / MSGO FOR           *       
-      * SEND-MAP-UPDATE TO DISPLAY.                             *       
+      * RESULT COLOR/TEXT PLACED INTO MSGC / MSGO AND           *
+      * DISPLAYED VIA SEND-MAP (FULL MAP WITH ERASE).           *     
       *---------------------------------------------------------*       
        VALIDATE-OPRID.                                                  
            IF OPRIDL = ZERO OR OPRIDI = SPACES OR OPRIDI = LOW-VALUES   
