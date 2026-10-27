@@ -13,7 +13,7 @@ First CICS screen of an ATM authorization module. The program displays a screen 
 | [`COBOL`](COBOL) | [`ATMPGM1.cbl`](COBOL/ATMPGM1.cbl) | Transaction program (`AUTH`) - EIBCALEN/EIBAID routing, RECEIVE MAP, validation, SEND MAP |
 | [`JCL`](JCL) | [`MAPCOMP.jcl`](JCL/MAPCOMP.jcl) | Assembles the BMS mapset into a physical map (load module) + symbolic map (copybook) |
 | [`JCL`](JCL) | [`CICSCOB2.jcl`](JCL/CICSCOB2.jcl) | Translates, compiles and link-edits the COBOL program for CICS |
-| [`RDO`](RDO) | [`CEDA.md`](RDO/CEDA.md) | CEDA resource definitions (mapset, program, transaction) and install/verify commands |
+| [`RDO`](RDO) | [`CICS-COMMANDS.md`](RDO/CICS-COMMANDS.md) | CEDA resource definitions (mapset, program, transaction), install/verify and CEMT commands |
 | [`SCREENSHOTS`](SCREENSHOTS) | [`01`](SCREENSHOTS/01-INITIAL-SCREEN.png)-[`08`](SCREENSHOTS/08-AUTHORIZATION-SUCCESSFUL.png) `.png` | Terminal screenshots for the key test scenarios below |
 
 ## Screen Fields
@@ -97,7 +97,7 @@ All scenarios below were executed manually on the 3270 terminal emulator; result
 
 1. **Compile the mapset** - run [`MAPCOMP.jcl`](JCL/MAPCOMP.jcl) to assemble [`JOB1SET.bms`](BMS/JOB1SET.bms) into a load module and generate the [`JOB1SET.cpy`](COPYBOOK/JOB1SET.cpy) copybook.
 2. **Compile the COBOL program** - run [`CICSCOB2.jcl`](JCL/CICSCOB2.jcl) to compile [`ATMPGM1.cbl`](COBOL/ATMPGM1.cbl) for CICS.
-3. **Define and install resources** - follow [`CEDA.md`](RDO/CEDA.md) to define and install the mapset, program and transaction (`AUTH`) via CEDA.
+3. **Define and install resources** - follow [`CICS-COMMANDS.md`](RDO/CICS-COMMANDS.md) to define and install the mapset, program and transaction (`AUTH`) via CEDA.
 4. **Run the transaction** - clear the terminal screen and type `AUTH`, then press ENTER.
 
 ## Key CICS/COBOL Concepts Used
