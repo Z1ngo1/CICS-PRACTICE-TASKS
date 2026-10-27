@@ -1,0 +1,4 @@
+ICE055I 0 INSERT 0, DELETE 0                                                    
+ICE054I 0 RECORDS - IN: 8, OUT: 8                                               
+ICE134I 0 NUMBER OF BYTES SORTED: 640                                           
+ICE253I 0 RECORDS SORTED - PROCESSED: 8, EXPECTED: 6250                         
