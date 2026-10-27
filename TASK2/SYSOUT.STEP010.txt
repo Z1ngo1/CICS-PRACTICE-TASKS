@@ -1,0 +1,27 @@
+IDCAMS  SYSTEM SERVICES                                           TIME: 14:01:24
+                                                                                
+  DELETE Z73460.TASK2.CICS.BANK.OPER PURGE CLUSTER                              
+IDC0550I ENTRY (D) Z73460.TASK2.CICS.BANK.OPER.DATA DELETED                     
+IDC0550I ENTRY (I) Z73460.TASK2.CICS.BANK.OPER.INDEX DELETED                    
+IDC0550I ENTRY (C) Z73460.TASK2.CICS.BANK.OPER DELETED                          
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0                       
+                                                                                
+  SET MAXCC = 0                                                                 
+                                                                                
+                                                                                
+  DEFINE CLUSTER (NAME(Z73460.TASK2.CICS.BANK.OPER) -                           
+      RECORDSIZE(100 100)       -                                               
+      TRACKS(1 1)               -                                               
+      KEYS(8 0)                 -                                               
+      FREESPACE(10 20)          -                                               
+      SHAREOPTIONS(2 3)         -                                               
+      INDEXED)                  -                                               
+  DATA (NAME(Z73460.TASK2.CICS.BANK.OPER.DATA)) -                               
+  INDEX (NAME(Z73460.TASK2.CICS.BANK.OPER.INDEX))                               
+IDC0508I DATA ALLOCATION STATUS FOR VOLUME ZXPC02 IS 0                          
+IDC0509I INDEX ALLOCATION STATUS FOR VOLUME ZXPC02 IS 0                         
+IDC0181I STORAGECLASS USED IS ZXPS                                              
+IDC0181I DATACLASS USED IS ZXPD                                                 
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0                       
+                                                                                
+IDC0002I IDCAMS PROCESSING COMPLETE. MAXIMUM CONDITION CODE WAS 0               
