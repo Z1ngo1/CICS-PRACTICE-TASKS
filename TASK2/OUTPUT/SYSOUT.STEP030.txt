@@ -1,0 +1,8 @@
+IDCAMS  SYSTEM SERVICES                                           TIME: 14:01:25
+                                                                                
+  REPRO INFILE(INDD) -                                                          
+        OUTFILE(OUTDD)                                                          
+IDC0005I NUMBER OF RECORDS PROCESSED WAS 8                                      
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0                       
+                                                                                
+IDC0002I IDCAMS PROCESSING COMPLETE. MAXIMUM CONDITION CODE WAS 0               
