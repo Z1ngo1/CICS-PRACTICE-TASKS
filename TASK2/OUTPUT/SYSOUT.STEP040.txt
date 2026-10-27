@@ -1,0 +1,26 @@
+IDCAMS  SYSTEM SERVICES                                           TIME: 14:01:27
+                                                                                
+  PRINT INDATASET(Z73460.TASK2.CICS.BANK.OPER) CHARACTER                        
+IDCAMS  SYSTEM SERVICES                                           TIME: 14:01:27
+LISTING OF DATA SET -Z73460.TASK2.CICS.BANK.OPER                                
+KEY OF RECORD - OP000001                                                        
+OP0000011234JOHN SMITH                    A00                                   
+KEY OF RECORD - OP000002                                                        
+OP0000025678MARY JOHNSON                  A01                                   
+KEY OF RECORD - OP000003                                                        
+OP0000039999LOCKED USER                   L03                                   
+KEY OF RECORD - OP000004                                                        
+OP0000044444SARAH CONNOR                  L03                                   
+KEY OF RECORD - OP000005                                                        
+OP0000055555JAMES BOND                    A00                                   
+KEY OF RECORD - OP000006                                                        
+OP0000060123ALEXANDER KONSTANTINOV        A00                                   
+KEY OF RECORD - OP000007                                                        
+OP0000077777ANNA LEE                      A02                                   
+KEY OF RECORD - OP1                                                             
+OP1     1111SHORT ID USER                 A00                                   
+IDC0005I NUMBER OF RECORDS PROCESSED WAS 8                                      
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0                       
+IDCAMS  SYSTEM SERVICES                                           TIME: 14:01:27
+                                                                                
+IDC0002I IDCAMS PROCESSING COMPLETE. MAXIMUM CONDITION CODE WAS 0               
